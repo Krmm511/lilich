@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
+   <children>
+      <TableView fx:id="catalog" layoutX="200.0" layoutY="150.0" prefHeight="500.0" prefWidth="600.0">
+        <columns>
+            <TableColumn fx:id="moreDetails" prefWidth="150.0" text="כל הנתונים" />
+          <TableColumn fx:id="priceColumn" prefWidth="150.0" text="מחיר" />
+            <TableColumn fx:id="typeColumn" prefWidth="150.0" text="סוג" />
+          <TableColumn fx:id="nameColumn" prefWidth="150.0" text="שם הפריט" />
+        </columns>
+      </TableView>
+      <Button fx:id="showCatalog" layoutX="400.0" layoutY="70.0" mnemonicParsing="false" onAction="#ShowCatalog" prefHeight="25.0" prefWidth="200.0" text="הצג קטלוג" />
+   </children>
+</AnchorPane>
