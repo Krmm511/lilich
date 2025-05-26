@@ -36,6 +36,37 @@ public class CatalogDAO {
         }
         return null;
     }
+    public boolean isConnected() {
+        try (Connection testConn = connect()) {
+            return testConn != null && !testConn.isClosed();
+        } catch (SQLException e) {
+            System.err.println("Connection test failed:");
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public int getItemCount() {
+        int count=0;
+        String sql = "SELECT COUNT(*) AS total FROM LItems";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                count = rs.getInt("total");
+                System.out.println("DEBUG: Found " + count + " items in database");
+            } else {
+                System.out.println("DEBUG: No count result returned");
+            }
+        } catch (SQLException e) {
+            System.err.println("ERROR: Failed to get item count");
+            e.printStackTrace();
+            return -1; // Return -1 to indicate error
+        }
+
+        return count;
+    }
     public List<CatalogItem> getAllItems() {
         List<CatalogItem> items = new ArrayList<>();
         String sql = "SELECT * FROM LItems";
