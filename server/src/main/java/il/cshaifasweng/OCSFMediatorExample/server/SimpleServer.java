@@ -6,8 +6,8 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import java.io.IOException;
 import java.util.List;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Item;
-import il.cshaifasweng.OCSFMediatorExample.database.Database; //***to implement***
+import il.cshaifasweng.OCSFMediatorExample.entities.CatalogItem;
+import il.cshaifasweng.OCSFMediatorExample.CatalogDAO; //***to implement***
 
 public class SimpleServer extends AbstractServer {
 
@@ -25,13 +25,13 @@ public class SimpleServer extends AbstractServer {
 		try {
 			switch (parts[0]) {
 				case "#catalog" -> {
-					List<Item> items = Database.getAllItems();
+					List<CatalogItem> items = itemsDB.getAllItems();
 					client.sendToClient(items);
 				}
 				case "#item" -> {
 					if (parts.length >= 2) {
 						int itemId = Integer.parseInt(parts[1]);
-						Item item = Database.getItemById(itemId);
+						CatalogItem item = itemsDB.getItemById(itemId);
 						client.sendToClient(item);
 					}
 				}
@@ -39,8 +39,8 @@ public class SimpleServer extends AbstractServer {
 					if (parts.length >= 3) {
 						int itemId = Integer.parseInt(parts[1]);
 						double newPrice = Double.parseDouble(parts[2]);
-						Database.updateItemPrice(itemId, newPrice);
-						List<Item> updatedItems = Database.getAllItems();
+						itemsDB.updateItemPrice(itemId, newPrice);
+						List<CatalogItem> updatedItems = itemsDB.getAllItems();
 						client.sendToClient(updatedItems);
 					}
 				}
