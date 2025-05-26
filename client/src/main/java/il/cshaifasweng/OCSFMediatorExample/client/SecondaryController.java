@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
@@ -23,9 +24,12 @@ import il.cshaifasweng.OCSFMediatorExample.entities.CatalogDAO;
 import javax.print.DocFlavor;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.converter.DoubleStringConverter;
+
 import java.io.IOException;
 public class SecondaryController {
 
@@ -55,7 +59,7 @@ public class SecondaryController {
         id.setCellValueFactory(cellData -> new  SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         name.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
-        price.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
+        price.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
         int selectedId = getSelectedId(); // <-- Retrieve the selected ID
         CatalogDAO CDB = new CatalogDAO();
         CatalogItem item = CDB.getItemById(selectedId);
@@ -63,18 +67,32 @@ public class SecondaryController {
         items.add(item);
         itemsTable.setItems(items);
         itemsTable.refresh();
+        price.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        loadData();
         price.setOnEditCommit(event -> {
             CatalogItem editedItem = event.getRowValue();
-            editedItem.setPrice(event.getNewValue());
+            double np= event.getNewValue();
+            editedItem.setPrice(np);
+            new Thread(() -> {
+                new CatalogDAO().updatePrice(item.getId(), np);
+            }).start();
         });
+        itemsTable.setEditable(true);
         price.setEditable(true);
-
-
+    }
+    private void loadData() {
+        CatalogDAO dao = new CatalogDAO();
+        CatalogItem item = dao.getItemById(selectedId);;
+        itemsTable.getItems().clear();
+        if (item != null) {
+            itemsTable.getItems().add(item);
+        }
     }
     @FXML
     void CancelClicked(ActionEvent event) {
         try{
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
         Parent root = loader.load();
 
@@ -96,13 +114,18 @@ public class SecondaryController {
     }
 
   @FXML
-    void SaveClicked(ActionEvent event) {
-      try {
+    void SaveClicked(ActionEvent event)
+  {
+
+      if (!itemsTable.getItems().isEmpty()) {
           CatalogDAO dao = new CatalogDAO();
           CatalogItem item = itemsTable.getItems().get(0);  // since it's one item
           dao.updatePrice(item.getId(), item.getPrice());  // assumes this method exists
-
-          Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+      }
+      Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+      stage.close();
+      try
+      {
           FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
           Parent root = loader.load();
 

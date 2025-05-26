@@ -36,15 +36,7 @@ public class CatalogDAO {
         }
         return null;
     }
-    public boolean isConnected() {
-        try (Connection testConn = connect()) {
-            return testConn != null && !testConn.isClosed();
-        } catch (SQLException e) {
-            System.err.println("Connection test failed:");
-            e.printStackTrace();
-            return false;
-        }
-    }
+
     public int getItemCount() {
         int count=0;
         String sql = "SELECT COUNT(*) AS total FROM LItems";

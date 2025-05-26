@@ -16,10 +16,10 @@
       </Label>
       <TableView fx:id="itemsTable" editable="true" layoutX="41.0" layoutY="60.0" prefHeight="327.0" prefWidth="600">
         <columns>
-          <TableColumn fx:id="id" editable="false" prefWidth="150" text="ID" />
+          <TableColumn fx:id="id"  prefWidth="150" text="ID" />
           <TableColumn fx:id="name" prefWidth="150" text="Item Name" />
-            <TableColumn fx:id="type" editable="false" prefWidth="150" text="Type" />
-            <TableColumn fx:id="price" prefWidth="150" text="Price" />
+            <TableColumn fx:id="type"  prefWidth="150" text="Type" />
+            <TableColumn fx:id="price" editable="true" prefWidth="150" text="Price" />
         </columns>
       </TableView>
       <Button layoutX="341.0" layoutY="407.0" mnemonicParsing="false" onAction="#SaveClicked" style="-fx-background-color: #0077b5; -fx-text-fill: white;" text="Save Changes">
