@@ -5,6 +5,8 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.CatalogItem;
 import il.cshaifasweng.OCSFMediatorExample.entities.CatalogDAO;
 import java.io.IOException;
+
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -59,7 +61,7 @@ public class SecondaryController {
         id.setCellValueFactory(cellData -> new  SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         name.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
-        price.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
+        price.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPrice()));
         int selectedId = getSelectedId(); // <-- Retrieve the selected ID
         CatalogDAO CDB = new CatalogDAO();
         CatalogItem item = CDB.getItemById(selectedId);
@@ -91,18 +93,18 @@ public class SecondaryController {
     @FXML
     void CancelClicked(ActionEvent event) {
         try{
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
-        Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
+            Parent root = loader.load();
 
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-    }
-      catch (IOException e) {
-        e.printStackTrace();
-    }
+            Stage primaryStage = new Stage();
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
     public static void setSelectedId(int id) {
@@ -113,29 +115,29 @@ public class SecondaryController {
         return selectedId;
     }
 
-  @FXML
+    @FXML
     void SaveClicked(ActionEvent event)
-  {
+    {
 
-      if (!itemsTable.getItems().isEmpty()) {
-          CatalogDAO dao = new CatalogDAO();
-          CatalogItem item = itemsTable.getItems().get(0);  // since it's one item
-          dao.updatePrice(item.getId(), item.getPrice());  // assumes this method exists
-      }
-      Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-      stage.close();
-      try
-      {
-          FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
-          Parent root = loader.load();
+        if (!itemsTable.getItems().isEmpty()) {
+            CatalogDAO dao = new CatalogDAO();
+            CatalogItem item = itemsTable.getItems().get(0);  // since it's one item
+            dao.updatePrice(item.getId(), item.getPrice());  // assumes this method exists
+        }
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+        try
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("primary.fxml"));
+            Parent root = loader.load();
 
-          Stage primaryStage = new Stage();
-          primaryStage.setScene(new Scene(root));
-          primaryStage.show();
-      }
-      catch (IOException e) {
-          e.printStackTrace();
-      }
+            Stage primaryStage = new Stage();
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

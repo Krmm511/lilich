@@ -1,40 +1,52 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+
+
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import static java.lang.reflect.Array.set;
-
+@Entity
 public class CatalogItem {
-    private final IntegerProperty id = new SimpleIntegerProperty();
-    private final StringProperty name = new SimpleStringProperty();
-    private final DoubleProperty price = new SimpleDoubleProperty();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String name;
+    private double price;
     private String type;
-
-
-    public CatalogItem(int id, String name, String type, double price) {
-        this.id.set(id);
-        this.name.set(name);
+    private String path;
+    private boolean available;
+    public CatalogItem(int id, String name, String type, double price,String path,boolean available) {
+        this.id=id;
+        this.name=name;
         this.type=type;
-        this.price.set(price);
+        this.price=price;
+        this.path=path;
+        this.available=available;
+    }
+
+    public CatalogItem() {
     }
 
     // Getters and setters
-    public int getId() { return id.get(); }
-    public String getName() { return name.get(); }
-    public double getPrice() { return price.get(); }
+    public int getId() { return id;}
+    public String getName() { return name;}
+    public double getPrice() { return price;}
     public String getType() { return type; }
-    public DoubleProperty priceProperty() { return price; }
-    public void setId(int id) { this.id.set(id); }
-    public void setName(String name) { this.name.set(name); }
+    public double priceProperty() { return price; }
+    public String getPath() { return path; }
+    public boolean isAvailable() { return available; }
+    public void setId(int id) { this.id=id; }
+    public void setName(String name) { this.name=name; }
     public void setType(String type) { this.type = type; }
-    public void setPrice(double price) {  this.price.set(price); }
+    public void setPrice(double price) {  this.price=price; }
+    public void setPath(String path) { this.path=path; }
+    public void setAvailable(boolean available) { this.available=available; }
 
-    @Override
     public String toString() {
-        return String.format("CatalogItem{id=%d, name='%s', type='%s', price=%.2f}", id, name, type, price);
+        return String.format("CatalogItem{id=%d, name='%s', type='%s', price=%.2f}",
+                id, name, type, price);
     }
 }

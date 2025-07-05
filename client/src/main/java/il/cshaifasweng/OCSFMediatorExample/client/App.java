@@ -21,9 +21,11 @@ public class App extends Application {
 
     private static Scene scene;
     private SimpleClient client;
+    private static Stage stage;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage pstage) throws IOException {
+        stage=pstage;
     	EventBus.getDefault().register(this);
     	client = SimpleClient.getClient();
     	client.openConnection();
@@ -34,6 +36,7 @@ public class App extends Application {
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+        stage.centerOnScreen();
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

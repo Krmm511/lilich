@@ -10,9 +10,9 @@ public class CatalogDAO {
 
 
     private Connection connect() throws SQLException {
-         final String DB_URL = "jdbc:mysql://localhost:3306/itemsDB?useSSL=false&serverTimezone=UTC";
+         final String DB_URL = "jdbc:mysql://localhost:3306/itemsDB22?useSSL=false&serverTimezone=UTC";
          final String DB_USER = "root";
-         final String DB_PASSWORD = "Krm51102@";
+         final String DB_PASSWORD = "kRM51102@";
 
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
@@ -36,7 +36,15 @@ public class CatalogDAO {
         }
         return null;
     }
-
+    public boolean isConnected() {
+        try (Connection testConn = connect()) {
+            return testConn != null && !testConn.isClosed();
+        } catch (SQLException e) {
+            System.err.println("Connection test failed:");
+            e.printStackTrace();
+            return false;
+        }
+    }
     public int getItemCount() {
         int count=0;
         String sql = "SELECT COUNT(*) AS total FROM LItems";
