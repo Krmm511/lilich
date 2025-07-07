@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 import javafx.event.ActionEvent;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.EventBus;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -15,6 +17,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.CatalogDAO;
 import java.io.IOException;
 import java.util.List;
 import javafx.scene.control.Label;
+
 
 public class PrimaryController {
 	@FXML // fx:id="catalog"
@@ -88,15 +91,16 @@ public class PrimaryController {
 	@FXML
 	void ShowCatalog(ActionEvent event) {
 		CatalogDAO CDB = new CatalogDAO();
-		List<CatalogItem> itemList = CDB.getAllItems();// Load from database
-		//testing
-		/*if (itemList.isEmpty()) {
-			System.out.println("Catalog is empty.");
-		} else {
-			for (CatalogItem item : itemList) {
-				System.out.println(item);
-			}
-		}*/
+		List<CatalogItem> itemList = CDB.getAllItems();  // Directly queried the database from client side!
+		ObservableList<CatalogItem> items = FXCollections.observableArrayList(itemList);
+		catalog.setItems(items);
+		catalog.setVisible(true);
+		catalog.setManaged(true);
+	}
+
+
+	@Subscribe
+	public void onCatalogReceived(List<CatalogItem> itemList) {
 		ObservableList<CatalogItem> items = FXCollections.observableArrayList(itemList);
 		catalog.setItems(items);
 		catalog.setVisible(true);

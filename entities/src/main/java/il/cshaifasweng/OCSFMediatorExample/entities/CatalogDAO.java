@@ -10,9 +10,9 @@ public class CatalogDAO {
 
 
     private Connection connect() throws SQLException {
-         final String DB_URL = "jdbc:mysql://localhost:3306/itemsDB2?useSSL=false&serverTimezone=UTC";
+         final String DB_URL = "jdbc:mysql://localhost:3306/itemsDB?useSSL=false&serverTimezone=UTC";
          final String DB_USER = "root";
-         final String DB_PASSWORD = "123456789";
+         final String DB_PASSWORD = "Ss21a8ndra!";
 
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
