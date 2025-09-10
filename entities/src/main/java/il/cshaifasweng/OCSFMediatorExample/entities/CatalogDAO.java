@@ -10,25 +10,25 @@ public class CatalogDAO {
 
 
     private Connection connect() throws SQLException {
-         final String DB_URL = "jdbc:mysql://localhost:3306/itemsDB2?useSSL=false&serverTimezone=UTC";
+         final String DB_URL = "jdbc:mysql://localhost:3306/itemsdb?serverTimezone=UTC&useLegacyDatetimeCode=false";
          final String DB_USER = "root";
-         final String DB_PASSWORD = "123456789";
+         final String DB_PASSWORD = "Krm51102@";
 
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
 
     public CatalogItem getItemById(int id) {
-        String sql = "SELECT * FROM LItems WHERE id = ?";
+        String sql = "SELECT * FROM Catalog WHERE id = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return new CatalogItem(
-                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("type"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getString("pic_path")
                 );
             }
         } catch (SQLException e) {
@@ -47,7 +47,7 @@ public class CatalogDAO {
     }
     public int getItemCount() {
         int count=0;
-        String sql = "SELECT COUNT(*) AS total FROM LItems";
+        String sql = "SELECT COUNT(*) AS total FROM Catalog";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
@@ -69,17 +69,17 @@ public class CatalogDAO {
     }
     public List<CatalogItem> getAllItems() {
         List<CatalogItem> items = new ArrayList<>();
-        String sql = "SELECT * FROM LItems";
+        String sql = "SELECT * FROM Catalog";
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 items.add(new CatalogItem(
-                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("type"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getString("pic_path")
                 ));
             }
 
@@ -90,7 +90,7 @@ public class CatalogDAO {
     }
 
     public void updatePrice(int id, double newPrice) {
-        String sql = "UPDATE LItems SET price = ? WHERE id = ?";
+        String sql = "UPDATE Catalog SET price = ? WHERE id = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDouble(1, newPrice);

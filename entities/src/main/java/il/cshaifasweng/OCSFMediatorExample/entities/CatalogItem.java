@@ -1,40 +1,66 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
-import static java.lang.reflect.Array.set;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
+@Table(name = "Catalog")
 public class CatalogItem {
-    private final IntegerProperty id = new SimpleIntegerProperty();
-    private final StringProperty name = new SimpleStringProperty();
-    private final DoubleProperty price = new SimpleDoubleProperty();
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String name;
+
     private String type;
 
+    private double price;
 
-    public CatalogItem(int id, String name, String type, double price) {
-        this.id.set(id);
-        this.name.set(name);
-        this.type=type;
-        this.price.set(price);
+    @Column(name = "pic_path")
+    private String picPath;
+
+    // Availability in stores
+    //@ManyToMany(mappedBy = "items")
+    //private Set<Store> availableInStores = new HashSet<>();
+
+    // Orders containing this item (many-to-many with extra info via OrderItem)
+    /*@OneToMany(mappedBy = "catalogItem")
+    private Set<Order> orderItems = new HashSet<>();
+
+    // Complaints related to this item
+    @OneToMany(mappedBy = "catalogItem")
+    private Set<Complaint> complaints = new HashSet<>();*/
+
+    public CatalogItem() {}
+
+    public CatalogItem(String name, String type, double price, String picPath) {
+        this.name = name;
+        this.type = type;
+        this.price = price;
+        this.picPath = picPath;
     }
 
     // Getters and setters
-    public int getId() { return id.get(); }
-    public String getName() { return name.get(); }
-    public double getPrice() { return price.get(); }
-    public String getType() { return type; }
-    public DoubleProperty priceProperty() { return price; }
-    public void setId(int id) { this.id.set(id); }
-    public void setName(String name) { this.name.set(name); }
-    public void setType(String type) { this.type = type; }
-    public void setPrice(double price) {  this.price.set(price); }
+    public int getId() { return id; }
 
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+
+    public String getPicPath() { return picPath; }
+    public void setPicPath(String picPath) { this.picPath = picPath; }
+
+
+    @Override
     public String toString() {
-        return String.format("CatalogItem{id=%d, name='%s', type='%s', price=%.2f}",
-                id.get(), name.get(), type, price.get());
+        return String.format("CatalogItem{id=%d, name='%s', type='%s', price=%.2f, picPath='%s'}",
+                id, name, type, price, picPath);
     }
 }

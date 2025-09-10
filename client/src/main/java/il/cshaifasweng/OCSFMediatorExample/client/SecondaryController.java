@@ -64,10 +64,17 @@ public class SecondaryController {
     private static int selectedId;
     @FXML
     void initialize() {
-        id.setCellValueFactory(cellData -> new  SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        name.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-        type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
-        price.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
+        id.setCellValueFactory(cellData ->
+                new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+
+        name.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getName()));
+
+        type.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getType()));
+
+        price.setCellValueFactory(cellData ->
+                new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
         int selectedId = getSelectedId(); // <-- Retrieve the selected ID
         CatalogDAO CDB = new CatalogDAO();
         CatalogItem item = CDB.getItemById(selectedId);
