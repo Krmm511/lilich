@@ -11,7 +11,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.CatalogDAO; //***to implemen
 
 public class SimpleServer extends AbstractServer {
 
-	private final CatalogDAO itemsDB = new CatalogDAO();
+	private final CatalogDAO itemsdb = new CatalogDAO();
 
 	public SimpleServer(int port) {
 		super(port);
@@ -29,13 +29,13 @@ public class SimpleServer extends AbstractServer {
 		try {
 			switch (parts[0]) {
 				case "#catalog" -> {
-					List<CatalogItem> items = itemsDB.getAllItems();
+					List<CatalogItem> items = itemsdb.getAllItems();
 					client.sendToClient(items);
 				}
 				case "#item" -> {
 					if (parts.length >= 2) {
 						int itemId = Integer.parseInt(parts[1]);
-						CatalogItem item = itemsDB.getItemById(itemId);
+						CatalogItem item = itemsdb.getItemById(itemId);
 						client.sendToClient(item);
 					}
 				}
@@ -43,8 +43,8 @@ public class SimpleServer extends AbstractServer {
 					if (parts.length >= 3) {
 						int itemId = Integer.parseInt(parts[1]);
 						double newPrice = Double.parseDouble(parts[2]);
-						itemsDB.updatePrice(itemId, newPrice);
-						List<CatalogItem> updatedItems = itemsDB.getAllItems();
+						itemsdb.updatePrice(itemId, newPrice);
+						List<CatalogItem> updatedItems = itemsdb.getAllItems();
 						client.sendToClient(updatedItems);
 					}
 				}
